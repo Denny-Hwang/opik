@@ -1,0 +1,107 @@
+---
+title: 홈
+headline: Opik 문서 - 오픈 소스 LLM 관측성 및 최적화
+og:site_name: Opik 문서
+og:title: "Opik - 오픈 소스 LLM 관측성 및 에이전트 최적화"
+og:description: "프로토타입부터 프로덕션까지 GenAI 앱을 구축하고 테스트하며 최적화하세요. RAG, 에이전트 등을 위한 포괄적인 추적, 평가 및 프롬프트 최적화를 제공합니다."
+---
+
+<Note>
+  이 페이지는 AI로 번역되었습니다. 한국어 문서는 단계적으로 확장하고 있으며, 아직 번역되지 않은 링크는 영문 문서로 연결됩니다. 번역 개선을 위한 기여를 환영합니다.
+</Note>
+
+Opik은 LLM 애플리케이션의 동작을 이해하고, 성능을 측정하며, 체계적으로 개선하도록 돕는 [오픈 소스](https://github.com/comet-ml/opik) 플랫폼입니다. 챗봇, RAG 파이프라인 또는 다단계 에이전트 중 무엇을 구축하든 Opik은 "내 노트북에서 작동한다"는 단계에서 "프로덕션에서 안정적으로 작동한다"는 단계로 나아가는 데 필요한 도구를 제공합니다.
+
+## 엔드투엔드 AI 엔지니어링
+
+<Frame>
+  <img src="/img/home/EndToEnd-Engineering-Diagram.jpg" />
+</Frame>
+
+<Tip>
+  Opik은 오픈 소스입니다. 전체 소스 코드는 [GitHub](https://github.com/comet-ml/opik)에서 확인할 수 있으며, 전체 자체 호스팅 안내는 [여기](/self-host/local_deployment)에 있습니다.
+</Tip>
+
+## Opik 사용 방법
+
+<Tip>
+  **Claude Code, Cursor, VS Code Copilot, Codex 또는 opencode를 사용하고 있나요?** [Opik MCP 서버](/mcp-server)를 설치하면 채팅에서 트레이스를 읽고, 출력에 점수를 매기고, 프롬프트를 저장하고, 실험을 실행하는 등 전체 워크스페이스를 제어할 수 있습니다.
+</Tip>
+
+<Steps>
+  ### 애플리케이션의 동작 확인
+
+  Opik은 모든 LLM 호출, 도구 실행 및 에이전트 단계를 기록하므로 어떤 출력이 만들어진 전체 과정을 살펴볼 수 있습니다. 코드 몇 줄만 추가하면 모든 요청과 응답의 완전한 로그를 얻을 수 있습니다.
+
+  [트레이스 기록 시작하기 →](/tracing/getting-started)
+
+  ### 트레이스로 테스트 스위트 구축
+
+  문제가 있는 트레이스를 발견하면 테스트 케이스로 전환하세요. [Ollie](/ollie)에게 문제를 설명해 자동으로 만들거나 UI 또는 SDK를 통해 테스트 케이스를 추가할 수 있습니다. 그런 다음 Ollie 또는 SDK로 테스트 스위트를 실행해 수정 사항을 검증하세요.
+
+  시간이 지나면서 가상의 예제가 아니라 실제 프로덕션 장애를 기반으로 테스트 스위트가 성장합니다.
+
+  [첫 번째 테스트 스위트 구축하기 →](/evaluation/advanced/building-test-suites)
+
+  ### 프로덕션 품질 추적
+
+  수신되는 트레이스에 자동으로 점수를 매기는 온라인 평가 규칙을 설정하고 프로젝트 대시보드에서 피드백 점수, 지연 시간, 비용 및 오류율을 모니터링하세요.
+
+  [프로덕션 모니터링 설정하기 →](/production/online-evaluation/rules)
+
+  ### 프롬프트 자동 개선
+
+  Opik의 최적화 알고리즘은 수동 시행착오 없이 지표와 데이터셋을 기준으로 다양한 프롬프트를 테스트해 가장 효과적인 프롬프트를 찾습니다.
+
+  [첫 번째 최적화 실행하기 →](/development/optimization-runs/quickstart)
+</Steps>
+
+## 기능별로 살펴보기
+
+<CardGroup cols={2}>
+  <Card title="빠른 시작" href="/ko/quickstart" icon="fa-solid fa-rocket" iconPosition="left">
+    기존 AI 스택에서 몇 분 안에 Opik을 실행하세요. OpenAI, Anthropic, LangChain을 비롯한 50개 이상의 제공자 및 프레임워크와 연동됩니다.
+  </Card>
+  <Card title="MCP 서버" href="/mcp-server" icon="fa-solid fa-network-wired" iconPosition="left">
+    Claude Code, Cursor, VS Code Copilot, Codex 또는 opencode를 Opik 워크스페이스에 직접 연결하세요. UI 없이 채팅에서 트레이스를 읽고, 출력에 점수를 매기고, 실험을 실행할 수 있습니다.
+  </Card>
+  <Card title="트레이스 기록" href="/tracing/advanced/log_traces" icon="fa-solid fa-eye" iconPosition="left">
+    모든 LLM 호출, 도구 실행 및 에이전트 단계를 기록하세요. 오류를 디버깅하고 토큰 비용을 추적하며 애플리케이션의 동작을 이해할 수 있습니다.
+  </Card>
+  <Card title="성능 평가" href="/evaluation/overview" icon="fa-solid fa-chart-line" iconPosition="left">
+    자동화된 LLM 심사 및 휴리스틱 지표를 사용해 애플리케이션의 환각, 컨텍스트 재현율, 관련성 등을 평가하세요.
+  </Card>
+  <Card title="프롬프트 최적화" href="/development/optimization-runs/overview" icon="fa-solid fa-brain" iconPosition="left">
+    여섯 가지 최적화 알고리즘을 사용해 에이전트의 각 단계에 더 나은 프롬프트를 자동으로 생성하고 테스트하세요.
+  </Card>
+  <Card title="프롬프트 관리" href="/development/prompt-library/getting-started" icon="fa-solid fa-wand-magic-sparkles" iconPosition="left">
+    프롬프트를 저장하고 버전을 관리하며 [프롬프트 플레이그라운드](/development/prompt-playground)에서 결과를 비교하고 다양한 모델을 실험하세요.
+  </Card>
+  <Card title="Opik 자체 호스팅" href="/self-host/overview" icon="fa-solid fa-server" iconPosition="left">
+    로컬에서는 Docker로, 대규모 환경에서는 Kubernetes로 자체 인프라에 배포하세요. 데이터를 완전히 제어할 수 있습니다.
+  </Card>
+</CardGroup>
+
+## 실제 작동 모습
+
+<Frame>
+  <iframe
+    width="100%"
+    height="500px"
+    src="https://www.youtube-nocookie.com/embed/TO9ar6-OJj4?rel=0"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen
+  ></iframe>
+</Frame>
+
+## 오픈 소스 접근성과 엔터프라이즈 성능
+
+Opik의 모든 버전([클라우드](https://www.comet.com/signup?from=llm), [오픈 소스](https://github.com/comet-ml/opik), [엔터프라이즈](https://www.comet.com/site/pricing/))은 전체 AI 엔지니어링 기능을 포함합니다. 모든 버전은 세계 최대 규모의 여러 조직을 지원하며 성능이 검증된 Comet 플랫폼에서 실행됩니다.
+
+## 다음 단계
+
+- [빠른 시작](/ko/quickstart)에 따라 첫 번째 트레이스를 기록하세요.
+- 전체 기능이 필요한 경우 [영문 문서 홈](/)에서 아직 번역되지 않은 안내를 살펴보세요.
+- 번역 개선이나 새 한국어 페이지를 [GitHub](https://github.com/comet-ml/opik)에서 제안해 주세요.
