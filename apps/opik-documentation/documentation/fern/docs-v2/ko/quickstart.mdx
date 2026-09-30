@@ -1,0 +1,193 @@
+---
+headline: 빠른 시작
+og:description: Opik을 LLM 애플리케이션에 통합해 호출과 체인을 기록하는 단계별 안내입니다.
+og:site_name: Opik 문서
+og:title: 빠른 시작 가이드 - Opik 통합
+title: 빠른 시작
+---
+
+<Note>
+  이 페이지는 AI로 번역되었습니다. 한국어 문서는 단계적으로 확장하고 있으며, 아직 번역되지 않은 링크는 영문 문서로 연결됩니다. 번역 개선을 위한 기여를 환영합니다.
+</Note>
+
+이 가이드는 기존 에이전트에 Opik 플랫폼을 통합하는 방법을 안내합니다. 첫 번째 트레이스를 기록하고 Opik에서 프롬프트와 에이전트 구성을 추적해 보세요.
+
+<Frame>
+  <img src="/img/v2/observability/traces-page.png" alt="스팬 트리, 출력 및 피드백 점수가 표시된 Opik 트레이스 페이지" />
+</Frame>
+
+## 사전 준비
+
+먼저 Opik 사용 방식을 선택하세요.
+
+- **Opik Cloud**: [comet.com/opik](https://www.comet.com/signup?from=llm&utm_source=opik&utm_medium=colab&utm_content=quickstart&utm_campaign=opik)에서 무료 계정을 만드세요.
+- **자체 호스팅**: [자체 호스팅 가이드](/self-host/overview)에 따라 로컬 또는 Kubernetes에 Opik을 배포하세요.
+
+## 첫 번째 LLM 호출 기록
+
+Opik은 기존 LLM 애플리케이션에 간편하게 통합할 수 있습니다. 사용하는 스택에 맞는 탭을 선택하고 세 단계에 따라 첫 번째 트레이스를 기록하세요.
+
+<Tabs>
+  <Tab title="Python SDK" value="python-function-decorator">
+    Python 함수 데코레이터를 사용하는 경우 다음과 같이 통합합니다.
+
+    <Steps>
+      <Step title="Python SDK 설치">
+        ```bash
+        pip install opik
+        ```
+      </Step>
+      <Step title="SDK 구성">
+        ```bash
+        opik configure
+        ```
+      </Step>
+      <Step title="함수 추적">
+        함수에 `@track` 데코레이터를 적용합니다.
+
+        ```python
+        from opik import track
+
+        @track
+        def my_function(input: str) -> str:
+            return input
+        ```
+
+        이제 중첩 호출을 포함한 `my_function`의 모든 호출이 Opik에 기록됩니다. 대부분의 통합에서도 상위 함수에 `@track` 데코레이터를 적용할 수 있습니다.
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="TypeScript SDK" value="typescript-sdk">
+    TypeScript SDK로 트레이스를 직접 기록하려면 다음 단계를 따르세요.
+
+    <Steps>
+      <Step title="TypeScript SDK 설치">
+        ```bash
+        npm install opik
+        ```
+      </Step>
+      <Step title="SDK 구성">
+        대화형 CLI 도구를 실행하세요. 프로젝트 설정을 감지하고 필요한 의존성과 환경 변수 구성을 안내합니다.
+
+        ```bash
+        npx opik-ts configure
+        ```
+      </Step>
+      <Step title="트레이스 기록">
+        ```typescript
+        import { Opik } from "opik";
+
+        const client = new Opik();
+
+        const trace = client.trace({
+          name: "My LLM Application",
+          input: { prompt: "What is the capital of France?" },
+          output: { response: "The capital of France is Paris." },
+        });
+
+        trace.end();
+        await client.flush();
+        ```
+
+        더 상세한 관측성이 필요하면 트레이스 안에 스팬도 기록할 수 있습니다.
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="OpenAI (Python)" value="openai-python-sdk">
+    OpenAI Python SDK를 사용하는 경우 Opik 클라이언트로 감싸세요.
+
+    <Steps>
+      <Step title="Opik SDK 설치 및 구성">
+        ```bash
+        pip install opik
+        opik configure
+        ```
+      </Step>
+      <Step title="OpenAI 클라이언트 추적">
+        ```python
+        from opik.integrations.openai import track_openai
+        from openai import OpenAI
+
+        client = track_openai(OpenAI())
+
+        completion = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "user", "content": "Hello, how are you?"},
+            ],
+        )
+        print(completion.choices[0].message.content)
+        ```
+
+        이 클라이언트의 모든 OpenAI 호출이 Opik에 기록됩니다. 에이전트의 각 단계를 기록하려면 `@track` 데코레이터와 함께 사용할 수 있습니다.
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="AI 코딩 에이전트" value="ai-integration">
+    Claude Code, Codex, Cursor 또는 OpenCode 같은 코딩 에이전트를 사용한다면 Opik Skill로 애플리케이션 계측을 맡길 수 있습니다. Node.js가 필요합니다.
+
+    <Steps>
+      <Step title="Opik Skill 설치">
+        ```bash
+        npx skills add comet-ml/opik-skills
+        ```
+      </Step>
+      <Step title="통합 실행">
+        Skill을 설치한 후 코딩 에이전트에 다음 프롬프트를 입력하세요.
+
+        ```text
+        Instrument my agent with Opik using the /opik-instrument command.
+        ```
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="모든 통합" value="all-integrations">
+    Opik은 널리 사용되는 프레임워크와 모델 제공자를 위한 50개 이상의 통합을 제공합니다.
+
+    <CardGroup cols={3}>
+      <Card title="LangChain" href="/integrations/langchain" icon={<img src="/img/tracing/langchain.svg" />} iconPosition="left"/>
+      <Card title="LlamaIndex" href="/integrations/llama_index" icon={<img src="/img/tracing/llamaindex.svg" />} iconPosition="left"/>
+      <Card title="Anthropic" href="/integrations/anthropic" icon={<img src="/img/tracing/anthropic.svg" />} iconPosition="left"/>
+      <Card title="AWS Bedrock" href="/integrations/bedrock" icon={<img src="/img/tracing/bedrock.svg" />} iconPosition="left"/>
+      <Card title="Google Gemini" href="/integrations/gemini" icon={<img src="/img/tracing/gemini.svg" />} iconPosition="left"/>
+      <Card title="CrewAI" href="/integrations/crewai" icon={<img src="/img/tracing/crewai.svg" />} iconPosition="left"/>
+    </CardGroup>
+
+    **[모든 통합 보기 →](/integrations/overview)**
+  </Tab>
+</Tabs>
+
+## 트레이스 분석
+
+애플리케이션을 실행하면 Opik에 트레이스가 표시됩니다. Ollie를 사용해 트레이스를 분석하고 에이전트를 개선할 수도 있습니다.
+
+<video
+  src="/img/tracing/quickstart.mp4"
+  width="854"
+  height="480"
+  autoPlay
+  muted
+  loop
+  playsInline
+  preload="auto"
+/>
+
+트레이스가 표시되지 않으면 [Slack](https://chat.comet.com)에서 문의하거나 [GitHub 이슈](https://github.com/comet-ml/opik/issues)를 등록해 주세요.
+
+<Tip>
+  **AI 코딩 도우미를 사용한다면 권장합니다.** `uvx opik mcp configure` 명령으로 Claude Code, Codex, Cursor 등을 Opik에 연결하세요. SDK 없이 MCP 서버와 Opik Skill을 설치하며, 채팅에서 트레이스를 읽고 출력에 점수를 매기고 평가를 실행할 수 있습니다. 자세한 내용은 [MCP 서버](/mcp-server)를 참고하세요.
+</Tip>
+
+## 다음 단계
+
+첫 번째 트레이스를 기록했다면 다음 기능을 살펴보세요.
+
+1. [에이전트 관측성 상세 가이드](/tracing/advanced/log_traces): Opik에 기록되는 데이터를 맞춤 설정하고 대화를 기록하는 방법을 알아보세요.
+2. [Opik 실험](/evaluation/concepts): 모든 LLM 응답을 수동 검토하지 않도록 LLM 애플리케이션 평가를 자동화하세요.
+3. [Opik 평가 지표](/evaluation/metrics/overview): 환각, 답변 관련성, 컨텍스트 재현율 등의 지표로 LLM 응답에 점수를 매기세요.
+4. [Opik MCP 서버](/mcp-server): 편집기를 벗어나지 않고 트레이스를 읽고 점수를 기록하며 평가를 실행하세요.
+5. [한국어 문서 홈](/ko): 한국어로 제공되는 핵심 문서를 계속 살펴보세요.

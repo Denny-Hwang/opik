@@ -88,6 +88,10 @@ tabs:
     display-name: SDK & API reference
     icon: fa-regular fa-square-terminal
     slug: /reference
+  korean:
+    display-name: 한국어
+    icon: fa-regular fa-language
+    slug: /ko
 navigation:
   - tab: documentation
     layout:
@@ -1182,6 +1186,19 @@ navigation:
           - api: API Reference
             slug: /
             display-errors: true
+  - tab: korean
+    layout:
+      - section: 시작하기
+        slug: /ko
+        contents:
+          - page: 홈
+            path: ./docs-v2/ko/home.mdx
+            slug: /
+            icon: fa-regular fa-house
+          - page: 빠른 시작
+            path: ./docs-v2/ko/quickstart.mdx
+            slug: /quickstart
+            icon: fa-regular fa-bolt
 redirects:
   - source: "/docs/opik/self-improving-agents/ollie-and-your-codebase"
     destination: "/docs/opik/development/agent-playground"
